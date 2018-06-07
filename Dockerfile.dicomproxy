@@ -6,6 +6,7 @@ FROM rubinlab/epad
 RUN mkdir -p /root/DicomProxy/mysql && \
     mkdir -p /root/DicomProxy/etc  && \
     mkdir -p /root/DicomProxy/etc/scripts  && \
+    mkdir -p /root/DicomProxy/etc/scripts/so  && \
     mkdir -p /root/DicomProxy/dcm4chee  && \
     mkdir -p /root/DicomProxy/bin  && \
     mkdir -p /root/DicomProxy/tmp && \
@@ -29,5 +30,5 @@ RUN mkdir -p /root/DicomProxy/mysql && \
 
 VOLUME /root/DicomProxy
 
-ENTRYPOINT ["/bin/true"]
-CMD ["/bin/true"]
+ENTRYPOINT ["tail"]
+CMD ["-F", "/dev/null"]

@@ -2,18 +2,11 @@ version: '2'
 
 services:
 
-    dicomproxy:
-        image: srcc/epad:data
-
     mysql:
-        image: rubinlab/mysql
+        image: srcc/epad:mysql
         container_name: mysql
         environment: 
           - "MYSQL_ROOT_PASSWORD=epad"
-        volumes_from:
-          - dicomproxy
-        depends_on:
-          - dicomproxy
 
     dcm4chee:
         image: srcc/epad:dcm4chee
@@ -21,13 +14,12 @@ services:
         ports:
           - "9080:9080"
           - "11112:11112"
-        volumes_from:
-          - dicomproxy
+        volumes:
+          - dicomproxy:/root/DicomProxy
         links:
           - mysql
         depends_on:
           - mysql
-          - dicomproxy
 
     exist:
         image: rubinlab/exist
@@ -46,10 +38,12 @@ services:
           - exist
         ports:
           - "8080:8080"
-        volumes_from:
-          - dicomproxy
+        volumes:
+          - dicomproxy:/root/DicomProxy
         depends_on:
-          - dicomproxy
           - dcm4chee
           - mysql
           - exist
+
+volumes:
+  dicomproxy:
