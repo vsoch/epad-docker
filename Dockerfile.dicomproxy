@@ -1,5 +1,6 @@
 FROM rubinlab/epad
 
+# docker build -t srcc/epad:data -f Dockerfile.dicomproxy .
 # Create /root/DicomProxy Hierarchy
 
 RUN mkdir -p /root/DicomProxy/mysql && \
@@ -28,4 +29,5 @@ RUN mkdir -p /root/DicomProxy/mysql && \
 
 VOLUME /root/DicomProxy
 
+ENTRYPOINT ["/bin/true"]
 CMD ["/bin/true"]

@@ -1,0 +1,7 @@
+FROM rubinlab/epad
+
+# docker build -t srcc/epad:epad -f Dockerfile.epad .
+
+EXPOSE 8080
+
+CMD ["tail", "-F", "anything"]

@@ -1,6 +1,6 @@
 FROM rubinlab/dcm4chee
 
-# docker build -t srcc/dcm4chee -f Dockerfile.dcm4chee .
+# docker build -t srcc/epad:dcm4chee -f Dockerfile.dcm4chee .
 
 EXPOSE 9080
 EXPOSE 11112

@@ -1,36 +1,33 @@
 version: '2'
 
-# UNDER DEVELOPMENT
-
 services:
 
     dicomproxy:
         image: srcc/epad:data
 
     mysql:
-        image:  rubinlab/mysql
+        image: rubinlab/mysql
         container_name: mysql
         environment: 
           - "MYSQL_ROOT_PASSWORD=epad"
         volumes_from:
-        - dicomproxy
-        #- dicomproxy/mysql/:/var/lib/mysql
-        #entrypoint:
-        #- test `mysql -uroot -pepad -e "show databases like 'epaddb'" | wc -l` -gt 1 && sh /entrypoint.sh || sh /home/install.sh
-       
+          - dicomproxy
+        depends_on:
+          - dicomproxy
+
     dcm4chee:
         image: srcc/epad:dcm4chee
         container_name: dcm4chee
         ports:
-        - "9080:9080"
-        - "11112:11112"
+          - "9080:9080"
+          - "11112:11112"
         volumes_from:
-        - dicomproxy
-        #- dicomproxy/dcm4chee/:/app/dcm4chee-2.17.1-mysql/server/default/archive/
+          - dicomproxy
         links:
           - mysql
         depends_on:
           - mysql
+          - dicomproxy
 
     exist:
         image: rubinlab/exist
@@ -41,16 +38,18 @@ services:
           - mysql
 
     epad:
-        image: srcc/epad
+        image: srcc/epad:epad
         container_name: epad_web
         links:
-        - dcm4chee
-        - mysql:mysql_host
-        - exist
-        environment:
-        - "DOCKER_HOST=`hostname`"
+          - dcm4chee
+          - mysql:mysql_host
+          - exist
         ports:
-        - "8080:8080"
+          - "8080:8080"
         volumes_from:
-        - dicomproxy
-        #- dicomproxy:/root/DicomProxy/
+          - dicomproxy
+        depends_on:
+          - dicomproxy
+          - dcm4chee
+          - mysql
+          - exist
