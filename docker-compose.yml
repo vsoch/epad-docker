@@ -11,9 +11,9 @@ services:
         entrypoint:
         - test `mysql -uroot -pepad -e "show databases like 'epaddb'" | wc -l` -gt 1 && sh /entrypoint.sh || sh /home/install.sh
        
-    dcm4che:
-        image: rubinlab/dcm4che
-        container_name: dcm4che
+    dcm4chee:
+        image: rubinlab/dcm4chee
+        container_name: dcm4chee
         ports:
         - "9080:9080"
         - "11112:11112"
@@ -47,7 +47,3 @@ services:
         - ./DicomProxy/:/root/DicomProxy/
         - /etc/localtime:/etc/localtime:ro
         - /etc/timezone:/etc/timezone:ro
-
-networks:
-  dvn:
-    driver: bridge
