@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.13.0 (84fa826)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dcm4chee
+  name: dcm4chee
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: dcm4chee
+    spec:
+      containers:
+      - image: srcc/epad:dcm4chee
+        name: dcm4chee
+        ports:
+        - containerPort: 9080
+        - containerPort: 11112
+        resources: {}
+      restartPolicy: Always
+status: {}
