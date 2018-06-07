@@ -1,0 +1,12 @@
+FROM rubinlab/dcm4chee
+
+# docker build -t srcc/dcm4chee -f Dockerfile.dcm4chee .
+
+EXPOSE 9080
+EXPOSE 11112
+
+# Make a symbolic link from DicomProxy to mysql before start
+RUN rmdir /app/dcm4chee-2.17.1-mysql/server/default/archive && \
+    ln -s /root/DicomProxy/dcm4chee /app/dcm4chee-2.17.1-mysql/server/default/archive
+
+CMD ["sh","/app/dcm4chee-2.17.1-mysql/bin/run.sh"]
