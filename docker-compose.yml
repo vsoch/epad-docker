@@ -1,0 +1,53 @@
+version: '2'
+
+services:
+    mysql:
+        image:  rubinlab/mysql
+        container_name: mysql
+        environment: 
+          - "MYSQL_ROOT_PASSWORD=epad"
+        volumes:
+        - ./DicomProxy/mysql/:/var/lib/mysql
+        entrypoint:
+        - test `mysql -uroot -pepad -e "show databases like 'epaddb'" | wc -l` -gt 1 && sh /entrypoint.sh || sh /home/install.sh
+       
+    dcm4che:
+        image: rubinlab/dcm4che
+        container_name: dcm4che
+        ports:
+        - "9080:9080"
+        - "11112:11112"
+        volumes:
+        - ./DicomProxy/dcm4chee/:/app/dcm4chee-2.17.1-mysql/server/default/archive/
+        links:
+          - mysql
+        depends_on:
+          - mysql
+
+    exist:
+        image: rubinlab/exist
+        container_name: exist
+        ports:
+        - "8899:8899"
+        depends_on:
+          - mysql
+
+    epad:
+        image: rubinlab/epad
+        container_name: epad_web
+        links:
+        - dcm4chee
+        - mysql:mysql_host
+        - exist
+        environment:
+        - "DOCKER_HOST=`hostname`"
+        ports:
+        - "8080:8080"
+        volumes:
+        - ./DicomProxy/:/root/DicomProxy/
+        - /etc/localtime:/etc/localtime:ro
+        - /etc/timezone:/etc/timezone:ro
+
+networks:
+  dvn:
+    driver: bridge
