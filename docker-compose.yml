@@ -8,8 +8,8 @@ services:
           - "MYSQL_ROOT_PASSWORD=epad"
         volumes:
         - ./DicomProxy/mysql/:/var/lib/mysql
-        entrypoint:
-        - test `mysql -uroot -pepad -e "show databases like 'epaddb'" | wc -l` -gt 1 && sh /entrypoint.sh || sh /home/install.sh
+        #entrypoint:
+        #- test `mysql -uroot -pepad -e "show databases like 'epaddb'" | wc -l` -gt 1 && sh /entrypoint.sh || sh /home/install.sh
        
     dcm4chee:
         image: rubinlab/dcm4chee
