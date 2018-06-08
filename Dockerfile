@@ -5,6 +5,9 @@ FROM rubinlab/epad
 # Add install script to do the same
 COPY ./epad-install.sh /epad-install.sh
 
+# This should not be done here, I don't know where to define epad_host hostname
+RUN sed -i 's/epad_host/localhost/g' /root/epad/bin/epad-server-start.sh
+
 # Create /root/DicomProxy Hierarchy
 RUN mkdir -p /root/DicomProxy/mysql && \
     mkdir -p /root/DicomProxy/etc  && \
@@ -31,5 +34,7 @@ RUN mkdir -p /root/DicomProxy/mysql && \
     wget --directory-prefix=/root/DicomProxy/webapps/ ftp://epad-distribution.stanford.edu/ePad.war  && \
     wget --directory-prefix=/root/DicomProxy/lib/ ftp://epad-distribution.stanford.edu/epad-ws-1.1-jar-with-dependencies.jar && \
     chmod u+x /epad-install.sh
+
+CMD ["tail", "-f", "/dev/null"]
 
 EXPOSE 8080

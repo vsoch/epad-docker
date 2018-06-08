@@ -91,50 +91,19 @@ echo "Deploying epad Pod..."
 kubectl create -f epad-dcm4chee-mysql-deployment.yaml
 pod_name=$(basename `kubectl get pods -o=name`)
 echo "To see logs:"
-echo "kubectl logs ${pod_name}"
+echo "kubectl logs ${pod_name} [container]"
 echo "To delete:"
 echo "kubectl delete --filename epad-dcm4chee-mysql-deployment.yaml"
 echo "To connect to an interactive session"
-echo "kubectl exec -it "${pod_name}" [container] -- /bin/bash"
+echo "kubectl exec -it "${pod_name}" -c [container] -- /bin/bash"
 
-# Install mySql Tables
+# Install MySql Tables
 
 sleep 10
 echo "Running install steps for mysql"
-kubectl exec -it ${pod_name} mysql -- /bin/sh /home/install.sh
+kubectl exec -it ${pod_name} -c mysql -- /bin/sh /home/install.sh
 
+# Download epad war file and jar
 
-################################################################################
-# Dcm4chee
-################################################################################
-
-#echo "Creating dcm4chee deployment..."
-#kubectl create -f epad-dcm4chee-deployment.yaml
-#kubectl create -f dcm4chee-service.yaml
-
-
-################################################################################
-# eXist
-################################################################################
-
-echo "Creating eXist-db deployment..."
-kubectl create -f exist-deployment.yaml
-kubectl create -f exist-service.yaml
-
-
-################################################################################
-# epad
-################################################################################
-
-echo "Creating epad deployment..."
-kubectl create -f epad-deployment.yaml
-kubectl create -f epad-service.yaml
-
-
-################################################################################
-# Both?
-################################################################################
-
-#echo "Creating epad-dcm4chee deployment..."
-#kubectl create -f epad-dcm4chee-deployment.yaml
-#kubectl create -f dcm4chee-service.yaml
+echo "Creating e-pad web"
+kubectl exec -it ${pod_name} -c epad-web -- /bin/bash /epad-install.sh

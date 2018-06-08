@@ -19,17 +19,14 @@ spec:
         io.kompose.service: epad-dcm4chee-mysql
     spec:
       containers:
-      - image: srcc/epad:epad
+      - image: srcc/epad:main
         imagePullPolicy: Always
         name: epad-web
+        command: ["tail"]
+        args: ["-f", "/dev/null"]
         ports:
         - containerPort: 8080
         resources: {}
-        lifecycle:
-          postStart:
-            exec:
-              command:
-                - "/bin/bash /epad-install.sh"
         volumeMounts:
         - mountPath: /root/DicomProxy
           name: dicomproxy
