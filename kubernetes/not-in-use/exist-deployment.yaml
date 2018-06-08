@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.13.0 (84fa826)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: exist
+  name: exist
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: exist
+    spec:
+      containers:
+      - image: rubinlab/exist
+        name: exist
+        ports:
+        - containerPort: 8899
+        resources: {}
+      restartPolicy: Always
+status: {}
