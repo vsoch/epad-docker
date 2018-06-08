@@ -98,9 +98,11 @@ if [ "$1" = 'mysqld' ]; then
 	chown -R mysql:mysql "$DATADIR"
 fi
 
-sleep 10
+service mysql start
+
+mysql -uroot -pepad -e "show databases like 'epaddb'";
 
 # If the database isn't created, create it
-test `mysql -uroot -pepad -e "show databases like 'epaddb'" | wc -l` -gt 1 || sh /home/install.sh
+# test `mysql -uroot -pepad -e "show databases like 'epaddb'" | wc -l` -gt 1 || sh /home/install.sh
 
 exec "$@"

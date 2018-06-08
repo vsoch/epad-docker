@@ -3,7 +3,7 @@ version: '2'
 services:
 
     mysql:
-        image: srcc/epad:mysql
+        image: rubinlab/mysql
         container_name: mysql
         environment: 
           - "MYSQL_ROOT_PASSWORD=epad"
