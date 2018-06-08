@@ -81,39 +81,27 @@ gcloud container clusters get-credentials ${cluster_name} --project ${project} -
 
 
 ################################################################################
-# Persistent Volume
+# Cluster Generation
 ################################################################################
-
 
 echo "To see configuration details:"
 echo "gcloud container clusters describe $cluster_name"
 
-echo "Deploying Persistent Volume dicomproxy..."
-kubectl create -f dicomproxy-persistentvolumeclaim.yaml
-kubectl get pvc
-
-
-################################################################################
-# MYSQL
-################################################################################
-
-
-echo "Deploying mysql..."
-kubectl create -f mysql-deployment.yaml
-pod_mysql=$(basename `kubectl get pods -o=name`)
+echo "Deploying epad Pod..."
+kubectl create -f epad-dcm4chee-mysql-deployment.yaml
+pod_name=$(basename `kubectl get pods -o=name`)
 echo "To see logs:"
-echo "kubectl logs ${pod_mysql}"
+echo "kubectl logs ${pod_name}"
 echo "To delete:"
-echo "kubectl delete --filename mysql-deployment.yaml"
+echo "kubectl delete --filename epad-dcm4chee-mysql-deployment.yaml"
 echo "To connect to an interactive session"
-echo "kubectl exec -it "${pod_mysql}" -- /bin/bash"
+echo "kubectl exec -it "${pod_name}" [container] -- /bin/bash"
+
+# Install mySql Tables
 
 sleep 10
 echo "Running install steps for mysql"
-kubectl exec -it ${pod_mysql} -- /bin/sh /home/install.sh
-
-# We probably also might want a persistent volume for mysql
-# https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/#deploy-mysql
+kubectl exec -it ${pod_name} mysql -- /bin/sh /home/install.sh
 
 
 ################################################################################
