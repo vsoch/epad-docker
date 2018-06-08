@@ -10,7 +10,8 @@ metadata:
   name: dcm4chee
 spec:
   replicas: 1
-  strategy: {}
+  strategy:
+    type: Recreate
   template:
     metadata:
       creationTimestamp: null
@@ -24,5 +25,12 @@ spec:
         - containerPort: 9080
         - containerPort: 11112
         resources: {}
+        volumeMounts:
+        - mountPath: /root/DicomProxy
+          name: dicomproxy
       restartPolicy: Always
+      volumes:
+      - name: dicomproxy
+        persistentVolumeClaim:
+          claimName: dicomproxy
 status: {}
