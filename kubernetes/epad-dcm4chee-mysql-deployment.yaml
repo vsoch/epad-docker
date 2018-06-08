@@ -6,8 +6,8 @@ metadata:
     kompose.version: 1.13.0 (84fa826)
   creationTimestamp: null
   labels:
-    io.kompose.service: epad-dcm4cee
-  name: epad-dcm4cee
+    io.kompose.service: epad-dcm4cee-mysql
+  name: epad-dcm4chee-mysql
 spec:
   replicas: 1
   strategy:
@@ -16,7 +16,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: epad-dcm4chee
+        io.kompose.service: epad-dcm4chee-mysql
     spec:
       containers:
       - image: srcc/epad:epad
@@ -34,6 +34,7 @@ spec:
         - mountPath: /root/DicomProxy
           name: dicomproxy
       - image: srcc/epad:dcm4chee
+        imagePullPolicy: Always
         name: dcm4chee
         ports:
         - containerPort: 9080
@@ -42,6 +43,16 @@ spec:
         volumeMounts:
         - mountPath: /root/DicomProxy
           name: dicomproxy
+      - image: rubinlab/mysql
+        imagePullPolicy: Always
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: epad
+        name: mysql
+        resources: {}
+        ports:
+        - containerPort: 3306
+          name: mysql
       restartPolicy: Always
       volumes:
       - name: dicomproxy

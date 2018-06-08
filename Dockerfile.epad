@@ -3,7 +3,7 @@ FROM rubinlab/epad
 # docker build -t srcc/epad:epad -f Dockerfile.epad .
 
 # Add install script to do the same
-ADD /epad-install.sh /epad-install.sh
+ADD ./epad-install.sh /epad-install.sh
 
 # Create /root/DicomProxy Hierarchy
 RUN mkdir -p /root/DicomProxy/mysql && \
