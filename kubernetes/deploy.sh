@@ -107,3 +107,4 @@ kubectl exec -it ${pod_name} -c mysql -- /bin/sh /home/install.sh
 
 echo "Creating e-pad web"
 kubectl exec -it ${pod_name} -c epad-web -- /bin/bash /epad-install.sh
+kubectl exec -it ${pod_name} -c epad-web -- sh /root/epad/bin/epad-server-start.sh
