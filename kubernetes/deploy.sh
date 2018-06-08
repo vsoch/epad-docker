@@ -120,9 +120,9 @@ kubectl exec -it ${pod_mysql} -- /bin/sh /home/install.sh
 # Dcm4chee
 ################################################################################
 
-echo "Creating dcm4chee deployment..."
-kubectl create -f dcm4chee-deployment.yaml
-kubectl create -f dcm4chee-service.yaml
+#echo "Creating dcm4chee deployment..."
+#kubectl create -f epad-dcm4chee-deployment.yaml
+#kubectl create -f dcm4chee-service.yaml
 
 
 ################################################################################
@@ -141,3 +141,12 @@ kubectl create -f exist-service.yaml
 echo "Creating epad deployment..."
 kubectl create -f epad-deployment.yaml
 kubectl create -f epad-service.yaml
+
+
+################################################################################
+# Both?
+################################################################################
+
+#echo "Creating epad-dcm4chee deployment..."
+#kubectl create -f epad-dcm4chee-deployment.yaml
+#kubectl create -f dcm4chee-service.yaml
