@@ -12,3 +12,5 @@ docker-compose up -d dcm4chee epad
 sleep 10
 docker exec mysql sh /home/install.sh
 docker-compose restart dcm4chee
+sleep 10
+docker-compose restart epad
