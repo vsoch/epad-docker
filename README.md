@@ -15,3 +15,9 @@ chmod u+x setup.sh
 
 The web interface at [localhost:8080/epad](http://localhost:8080/epad) seems to 
 exist, but it takes easily a minute to show up.
+
+## Kubernetes
+
+To use the kubernetes deployment, see the files in [kubernetes](kubernetes).
+You will want to use the [deploy.sh](kubernetes/deploy.sh) script to bring up
+the cluster.

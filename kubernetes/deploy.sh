@@ -89,7 +89,7 @@ echo "gcloud container clusters describe $cluster_name"
 
 echo "Deploying epad Pod..."
 kubectl create -f epad-dcm4chee-mysql-deployment.yaml
-pod_name=$(basename `kubectl get pods -o=name`)
+pod_name=$(basename `kubectl get pods -o=name | grep epad-dcm4chee-mysql`)
 echo "To see logs:"
 echo "kubectl logs ${pod_name} [container]"
 echo "To delete:"
@@ -97,14 +97,24 @@ echo "kubectl delete --filename epad-dcm4chee-mysql-deployment.yaml"
 echo "To connect to an interactive session"
 echo "kubectl exec -it "${pod_name}" -c [container] -- /bin/bash"
 
+# Ingress
+
+echo "Deploying epad ingress..."
+kubectl create -f epad-ingress.yaml
+
 # Install MySql Tables
 
 sleep 10
 echo "Running install steps for mysql"
 kubectl exec -it ${pod_name} -c mysql -- /bin/sh /home/install.sh
+sleep 10
 
 # Download epad war file and jar
-
 echo "Creating e-pad web"
 kubectl exec -it ${pod_name} -c epad-web -- /bin/bash /epad-install.sh
+
+# This is nonsense, but it's what worked with docker-compose
+sleep 10
+kubectl exec -it ${pod_name} -c mysql -- /bin/sh /home/install.sh
+sleep 10
 kubectl exec -it ${pod_name} -c epad-web -- sh /root/epad/bin/epad-server-start.sh
